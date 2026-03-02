@@ -2,7 +2,7 @@ using System;
 using System.Net.Sockets;
 
 
-Blackjack blackjack = new();//이거 Whilea 문안에넣으면 재시작할때마다 덱을 리셋할거 같아서 일단 밖으로 빼두었습니다 확인 부탁드려요  
+Blackjack blackjack = new();//하나의 덱을 생성한고 게임이 끝날때까지 사용하기위해 사용
 
 while (true)
 {
@@ -12,6 +12,7 @@ while (true)
     Dealer dealer = new();
     Player player = new();
     Console.WriteLine("===초기패===");
+    blackjack.Betting();
     dealer.AddHands(blackjack.Draw(), blackjack.Draw());
     blackjack.ShowDealer(dealer);
     Console.WriteLine();
@@ -19,9 +20,6 @@ while (true)
     player.AddHands(blackjack.Draw(), blackjack.Draw());
     blackjack.ShowPlayer(player);
     Console.WriteLine();
-
-
-
 
     while (true)
     {
@@ -59,14 +57,18 @@ while (true)
     }
 
 
-    if (player.IsOver) //21이 넘으면 바로 게임을 끝나게 만들게 하고싶어서 추가했습니다.
+    if (player.IsOver) //플레이어 카드가 21을 넘으면 딜러차례없이 게임종료
     {
-        GameResult();
+        GameResult();// 현재코인이 0보다 적으면 그대로 프로그램을 끝나게 만들었는데 모든정보를 리셋하고 코인을 1000 부터 다시 시작하는게 맞는걸까요?
+        if (blackjack.CurrentCoin<=0)
+        { 
+            return;
+        }
     }
     else
     {
         dealer.IsOpened = true; //딜러 true 만드는방법이 안떠올라서 그냥 입력해버렸습니다. 확인부탁드려요 
-        blackjack.secretcard(dealer); // 잘몰라서 그냥 블랙잭 클래스안에서 하나 만들었습니다.
+        blackjack.secretcard(dealer); // 딜러의 시크릿 카드 오픈
         blackjack.ShowDealer(dealer);
         Console.WriteLine();
 
@@ -85,9 +87,14 @@ while (true)
             {
                 Console.WriteLine();
                 break;
+
             }
         }
         GameResult();
+        if (blackjack.CurrentCoin <= 0)
+        {
+            return;
+        }
         Console.WriteLine();
     }
     for (; ; )
@@ -113,6 +120,12 @@ while (true)
 
 
 
+
+
+
+
+
+
     void GameResult()
     {
         Console.WriteLine("===게임 결과===");
@@ -123,22 +136,46 @@ while (true)
         if (21 < player.Score)
         {
             Console.WriteLine("딜러의 승리");
+            blackjack.CurrentCoin -= blackjack.InputCoin;
+            Console.WriteLine($"딜러의 승리!(-{blackjack.InputCoin})");
+            Console.WriteLine($"보유칩:({blackjack.CurrentCoin})");
+            if (blackjack.CurrentCoin <= 0)//현재 가지고 있는 코인이 0이하일 경우 게임오버
+            {
+                Console.WriteLine($"보유한 코인이 없습니다");
+                Console.WriteLine($"게임오버");
+            }
         }
         else if (21 < dealer.Score)
         {
             Console.WriteLine("플레이어의 승리");
+            blackjack.CurrentCoin += blackjack.InputCoin;
+            Console.WriteLine($"플레이어의 승리!(+{blackjack.InputCoin})");
+            Console.WriteLine($"보유칩:({blackjack.CurrentCoin})");
         }
         else if (player.Score < dealer.Score)
         {
             Console.WriteLine("딜러의 승리");
-        }
+            blackjack.CurrentCoin -= blackjack.InputCoin;
+            Console.WriteLine($"딜러의 승리!(-{blackjack.InputCoin})");
+            Console.WriteLine($"보유칩:({blackjack.CurrentCoin})");
+            if (blackjack.CurrentCoin <= 0)
+            {
+                Console.WriteLine($"보유한 코인이 없습니다");
+                Console.WriteLine($"게임오버");
+            }
+        }          
         else if (player.Score > dealer.Score)
         {
             Console.WriteLine("플레이어의 승리");
+            blackjack.CurrentCoin += blackjack.InputCoin;
+            Console.WriteLine($"플레이어의 승리!(+{blackjack.InputCoin})");
+            Console.WriteLine($"보유칩:({blackjack.CurrentCoin})");
         }
         else
         {
             Console.WriteLine("무승부");
         }
     }
+
+    
 }
