@@ -11,14 +11,14 @@ internal class Blackjack
 
     public int Counter;
 
- 
+
 
 
     public Blackjack()
     {
         NewDeck();
     }
-      
+
 
 
     private void NewDeck()
@@ -53,11 +53,11 @@ internal class Blackjack
             Console.WriteLine("새로운 덱을 열었습니다");
             NewDeck();
         }
-       return CurrDeck[Counter++];
+        return CurrDeck[Counter++];
     }
 
 
-    
+
     public void ShowDealer(Dealer dealer)
     {
         string cardSuit;
@@ -77,10 +77,10 @@ internal class Blackjack
                 Console.Write($"[{cardSuit} {cardNumber}] ");
             }
         }
-      
+
         Console.WriteLine();
         Console.Write($"딜러 점수: {(dealer.IsOpened ? dealer.Score : " ??")}");
-       
+
 
     }
 
@@ -94,9 +94,9 @@ internal class Blackjack
         {
             cardSuit = CardSuits[player.Hands[i] / 13];
             cardNumber = CardNumbers[player.Hands[i] % 13];
-            
-                Console.Write($"[{cardSuit} {cardNumber}] ");
-          
+
+            Console.Write($"[{cardSuit} {cardNumber}] ");
+
         }
         Console.WriteLine();
         Console.WriteLine($"플레이어 점수: {player.Score}");
@@ -105,7 +105,7 @@ internal class Blackjack
 
 
     public void secretcard(Dealer dealer)//이게 새로만든 매소드 입니다.
-    { 
+    {
         int i = 0;
         string cardSuit;
         string cardNumber;
@@ -115,7 +115,7 @@ internal class Blackjack
     }
 
 
-   
+
 
 
 

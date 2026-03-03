@@ -62,8 +62,8 @@ while (true)
     if (player.IsOver) //플레이어 카드가 21을 넘으면 딜러차례없이 게임종료
     {
         GameResult();// 현재코인이 0보다 적으면 그대로 프로그램을 끝나게 만들었는데 모든정보를 리셋하고 코인을 1000 부터 다시 시작하는게 맞는걸까요?
-        if (player.CurrentCoin<=0)
-        { 
+        if (player.CurrentCoin <= 0)
+        {
             return;
         }
     }
@@ -165,7 +165,7 @@ while (true)
                 Console.WriteLine($"보유한 코인이 없습니다");
                 Console.WriteLine($"게임오버");
             }
-        }          
+        }
         else if (player.Score > dealer.Score)
         {
             Console.WriteLine("플레이어의 승리");
@@ -179,5 +179,5 @@ while (true)
         }
     }
 
-    
+
 }
